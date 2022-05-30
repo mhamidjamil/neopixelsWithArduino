@@ -33,26 +33,26 @@ void setup()
 #endif
     // END of Trinket-specific code.
 
-    strip_1.begin();           // INITIALIZE NeoPixel strip_1 object (REQUIRED)
-    strip_1.show();            // Turn OFF all pixels ASAP
+    strip_1.begin();            // INITIALIZE NeoPixel strip_1 object (REQUIRED)
+    strip_1.show();             // Turn OFF all pixels ASAP
     strip_1.setBrightness(150); // Set BRIGHTNESS to about 1/5 (max = 255)
 
-    strip_2.begin();           // INITIALIZE NeoPixel strip_1 object (REQUIRED)
-    strip_2.show();            // Turn OFF all pixels ASAP
+    strip_2.begin();            // INITIALIZE NeoPixel strip_1 object (REQUIRED)
+    strip_2.show();             // Turn OFF all pixels ASAP
     strip_2.setBrightness(150); // Set BRIGHTNESS to about 1/5 (max = 255)
 
-    strip_3.begin();           // INITIALIZE NeoPixel strip_1 object (REQUIRED)
-    strip_3.show();            // Turn OFF all pixels ASAP
+    strip_3.begin();            // INITIALIZE NeoPixel strip_1 object (REQUIRED)
+    strip_3.show();             // Turn OFF all pixels ASAP
     strip_3.setBrightness(150); // Set BRIGHTNESS to about 1/5 (max = 255)
 }
 
 void loop()
 {
     // Fill along the length of the strip_1 in various colors...
-        // colorWipe(strip_1.Color(255, 0, 0), 50); // Red
-        // colorWipe(strip_2.Color(0, 255, 0), 50); // Green
-        // colorWipe(strip_3.Color(0, 0, 255), 50); // Blue
-        colorWipe_4(strip_1.Color(255, 0, 0),strip_2.Color(255, 0, 0),strip_3.Color(255, 0, 0), 100);
+    // colorWipe(strip_1.Color(255, 0, 0), 50); // Red
+    // colorWipe(strip_2.Color(0, 255, 0), 50); // Green
+    // colorWipe(strip_3.Color(0, 0, 255), 50); // Blue
+    multiColorDisplay(strip_1.Color(127, 0, 127), strip_2.Color(127, 0, 127), strip_3.Color(127, 0, 127), 500);
     // theaterChaseRainbow(50); // Rainbow-enhanced theaterChase variant
 }
 
@@ -66,27 +66,47 @@ void loop()
 void colorWipe(uint32_t color, int wait)
 {
     for (int i = 0; i < strip_1.numPixels() && checkCharger(); i++)
-    {                                  // For each pixel in strip_1...
+    {                                    // For each pixel in strip_1...
         strip_1.setPixelColor(i, color); //  Set pixel's color (in RAM)
         strip_2.setPixelColor(i, color); //  Set pixel's color (in RAM)
         strip_3.setPixelColor(i, color); //  Set pixel's color (in RAM)
         strip_1.show();                  //  Update strip_1 to match
         strip_2.show();                  //  Update strip_1 to match
         strip_3.show();                  //  Update strip_1 to match
-        delay(wait);                   //  Pause for a moment
+        delay(wait);                     //  Pause for a moment
     }
 }
-void colorWipe_4(uint32_t color,uint32_t color_2,uint32_t color_3, int wait)
+void multiColorDisplay(uint32_t color, uint32_t color_2, uint32_t color_3, int wait)
 {
-    for (int i = 0; i < strip_1.numPixels() && checkCharger(); i++)
-    {                                  // For each pixel in strip_1...
-        strip_1.setPixelColor(i, color); //  Set pixel's color (in RAM)
-        strip_2.setPixelColor(i, color_2); //  Set pixel's color (in RAM)
-        strip_3.setPixelColor(i, color_3); //  Set pixel's color (in RAM)
-        strip_1.show();                  //  Update strip_1 to match
-        strip_2.show();                  //  Update strip_1 to match
-        strip_3.show();                  //  Update strip_1 to match
-        delay(wait);                   //  Pause for a moment
+    int counter = 0, i;
+    for (i = 0; i < strip_1.numPixels() && checkCharger(); counter++)
+    {
+        // For each pixel in strip_1...
+        strip_1.setPixelColor(i, (0, 0, 0)); //  Set pixel's color (in RAM)
+        strip_2.setPixelColor(i, (0, 0, 0)); //  Set pixel's color (in RAM)
+        strip_3.setPixelColor(i, (0, 0, 0)); //  Set pixel's color (in RAM)
+        strip_1.show();                      //  Update strip_1 to match
+        strip_2.show();                      //  Update strip_1 to match
+        strip_3.show();                      //  Update strip_1 to match
+        delay(wait);                         //  Pause for a moment
+        strip_1.setPixelColor(i, color);     //  Set pixel's color (in RAM)
+        strip_2.setPixelColor(i, color_2);   //  Set pixel's color (in RAM)
+        strip_3.setPixelColor(i, color_3);   //  Set pixel's color (in RAM)
+        strip_1.show();                      //  Update strip_1 to match
+        strip_2.show();                      //  Update strip_1 to match
+        strip_3.show();                      //  Update strip_1 to match
+        delay(wait);                         //  Pause for a moment
+        if (counter >= 5)
+        {
+            counter = 0;
+            i++;
+        }
+        if (i >= LED_COUNT)
+        {
+            while (true)
+            {
+            }
+        }
     }
 }
 bool checkCharger()
